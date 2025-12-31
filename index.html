@@ -1,17 +1,79 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>HTML資料置き場</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HTML資料一覧</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; padding: 24px; }
+    h1 { margin: 0 0 16px; }
+    .note { color: #666; margin-bottom: 16px; }
+    ul { line-height: 1.9; }
+    a { text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .err { color: #b00020; }
+  </style>
 </head>
 <body>
   <h1>HTML資料一覧</h1>
-  <ul>
-    <li>
-      <a href="./tateyama-shotoku.html">
-        館山神社と聖徳太子
-      </a>
-    </li>
-  </ul>
+  <div class="note">HTMLファイルを追加すると自動で一覧に出ます。</div>
+  <div id="status"></div>
+  <ul id="list"></ul>
+
+  <script>
+    const owner = "Kaz045";
+    const repo  = "Reference-materials-HTML-";
+    const path  = ""; // ルート直下。フォルダ運用にするなら "docs" などに変更
+
+    const statusEl = document.getElementById("status");
+    const listEl = document.getElementById("list");
+
+    function humanize(name) {
+      // .html を外して、簡易的に見やすくする（必要なら好みに調整）
+      return name.replace(/\.html$/i, "")
+                 .replace(/[-_]/g, " ");
+    }
+
+    async function main() {
+      try {
+        statusEl.textContent = "読み込み中…";
+        const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+        const res = await fetch(url, { headers: { "Accept": "application/vnd.github+json" } });
+        if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+
+        const items = await res.json();
+
+        // ルート直下の html を抽出（index.html は除外）
+        const pages = items
+          .filter(x => x.type === "file")
+          .map(x => x.name)
+          .filter(n => n.toLowerCase().endsWith(".html"))
+          .filter(n => n.toLowerCase() !== "index.html")
+          .sort((a,b) => a.localeCompare(b, "en"));
+
+        listEl.innerHTML = "";
+        if (pages.length === 0) {
+          statusEl.textContent = "";
+          listEl.innerHTML = "<li>まだHTMLがありません。</li>";
+          return;
+        }
+
+        for (const name of pages) {
+          const li = document.createElement("li");
+          const a = document.createElement("a");
+          a.href = `./${encodeURIComponent(name)}`;
+          a.textContent = humanize(name);
+          li.appendChild(a);
+          listEl.appendChild(li);
+        }
+
+        statusEl.textContent = "";
+      } catch (e) {
+        statusEl.innerHTML = `<div class="err">一覧の自動生成に失敗しました：${e.message}</div>`;
+      }
+    }
+
+    main();
+  </script>
 </body>
 </html>
