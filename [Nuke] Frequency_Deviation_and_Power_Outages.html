@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>周波数のズレと停電の仕組み | 公的データ版</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans JP', 'sans-serif'],
+                    },
+                    colors: {
+                        'motor-red': '#FF4757',
+                        'clock-yellow': '#FFA502',
+                        'safe-green': '#2ED573',
+                        'elec-blue': '#1E90FF',
+                        'dark-bg': '#2F3542',
+                        'gov-gray': '#57606f',
+                    },
+                    animation: {
+                        'balance': 'balance 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        balance: {
+                            '0%, 100%': { transform: 'rotate(0deg)' },
+                            '25%': { transform: 'rotate(-6deg)' },
+                            '75%': { transform: 'rotate(6deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #1E90FF, #2ED573);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Meter CSS */
+        .meter-bg {
+            background: linear-gradient(90deg, #2ED573 40%, #FFA502 80%, #FF4757 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans leading-relaxed">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md fixed w-full top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-800 flex items-center">
+                <i class="fa-solid fa-bolt text-elec-blue mr-2"></i>
+                <span>電力システム理論</span>
+            </h1>
+            <span class="text-[10px] md:text-xs bg-gov-gray text-white px-3 py-1 rounded-full border border-gray-400">
+                <i class="fa-solid fa-scale-balanced mr-1"></i>資源エネルギー庁/OCCTO 参照
+            </span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 pt-24 pb-20">
+
+        <!-- Intro Section -->
+        <section class="mb-16 fade-in text-center">
+            <h2 class="text-3xl md:text-4xl font-black mb-6">電気の<span class="gradient-text">品質＝周波数</span></h2>
+            
+            <!-- Infographic: The Balance Scale -->
+            <div class="bg-white p-8 rounded-2xl shadow-lg mb-6 border-t-4 border-elec-blue relative overflow-hidden">
+                <p class="text-sm text-gray-500 font-bold mb-4 uppercase tracking-widest">基本原理：同時同量</p>
+                
+                <!-- Vertical Space Optimization -->
+                <div class="relative h-80 w-full flex justify-center items-end mb-6 px-4">
+                    <!-- The Scale Arm (Positioned very high) -->
+                    <div class="w-2/3 h-2 bg-gray-700 rounded-full relative animate-balance origin-center mb-40 z-20">
+                        <!-- Pivot Point -->
+                        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-gray-800 rounded-full border-4 border-white z-30 shadow-md"></div>
+                        
+                        <!-- Left Pan (Supply) -->
+                        <div class="absolute left-0 top-full -translate-x-1/2 flex flex-col items-center">
+                            <div class="w-0.5 h-6 bg-gray-400"></div> <!-- String (Shortened) -->
+                            <div class="w-16 h-16 md:w-20 md:h-20 bg-elec-blue rounded-full flex items-center justify-center text-white shadow-xl">
+                                <i class="fa-solid fa-plug-circle-bolt text-2xl md:text-3xl"></i>
+                            </div>
+                            <div class="mt-4 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-gray-100">
+                                <span class="text-xs md:text-sm font-bold text-gray-800 whitespace-nowrap">発電 (供給)</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Pan (Demand) -->
+                        <div class="absolute right-0 top-full translate-x-1/2 flex flex-col items-center">
+                            <div class="w-0.5 h-6 bg-gray-400"></div> <!-- String (Shortened) -->
+                            <div class="w-16 h-16 md:w-20 md:h-20 bg-motor-red rounded-full flex items-center justify-center text-white shadow-xl">
+                                <i class="fa-solid fa-city text-2xl md:text-3xl"></i>
+                            </div>
+                            <div class="mt-4 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-gray-100">
+                                <span class="text-xs md:text-sm font-bold text-gray-800 whitespace-nowrap">消費 (需要)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Taller Base Stand -->
+                    <div class="absolute bottom-0 w-8 h-[160px] bg-gray-800 rounded-t-full z-10 shadow-lg"></div>
+                    <div class="absolute bottom-0 w-28 h-4 bg-gray-800 rounded-full z-10"></div>
+                </div>
+
+                <div class="text-sm bg-blue-50 p-6 rounded-xl text-left border-l-4 border-elec-blue">
+                    <span class="font-bold text-elec-blue text-lg">【同時同量の原則】</span><br>
+                    <p class="mt-2 text-gray-700 leading-relaxed">
+                        電気は貯められないため、「作る量」と「使う量」が常に一致していないと周波数が乱れます。
+                        天秤が大きく傾く（振り切る）ことは、電力システムの崩壊＝停電の始まりを意味します。
+                    </p>
+                    <span class="text-[10px] text-gray-400 mt-3 block text-right">※出典：資源エネルギー庁「電力供給の仕組み」より</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 1: Appliances -->
+        <section class="mb-16 fade-in">
+            <div class="flex items-center mb-6 border-b pb-2 border-gray-300">
+                <h3 class="text-2xl font-bold text-gray-800">1. 周波数変動による機器への影響</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- High Impact -->
+                <div class="bg-white rounded-lg shadow border-l-4 border-motor-red p-5">
+                    <div class="flex justify-between items-start mb-3">
+                        <h4 class="font-bold text-lg text-gray-800">誘導モーター機器</h4>
+                        <span class="bg-red-100 text-motor-red text-[10px] px-2 py-1 rounded-full font-bold">影響大</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-3">工場用ポンプ、古い洗濯機、扇風機など</p>
+                    <div class="bg-gray-50 p-3 rounded text-sm space-y-3">
+                        <div class="flex items-start">
+                            <i class="fa-solid fa-circle-down text-blue-500 mt-1 mr-3"></i>
+                            <span><span class="font-bold text-blue-600">Hz低下</span>：回転数が落ち、内部に過電流が流れて最悪の場合<span class="text-red-600 font-bold">発火・焼損</span>します。</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fa-solid fa-circle-up text-red-500 mt-1 mr-3"></i>
+                            <span><span class="font-bold text-red-600">Hz上昇</span>：過回転になり、異常な振動や騒音が発生して<span class="text-red-600 font-bold">物理的破壊</span>を招きます。</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modern Context -->
+                <div class="bg-white rounded-lg shadow border-l-4 border-safe-green p-5">
+                    <div class="flex justify-between items-start mb-3">
+                        <h4 class="font-bold text-lg text-gray-800">インバータ制御機器</h4>
+                        <span class="bg-green-100 text-safe-green text-[10px] px-2 py-1 rounded-full font-bold">影響小</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-3">PC、最新のエアコン、スマホ、LED照明</p>
+                    <div class="bg-gray-50 p-3 rounded text-sm">
+                        <p class="text-gray-700 leading-relaxed">
+                            内部で一度DC変換して周波数を作り直すため、直接的な性能低下は少ないですが、<span class="font-bold underline decoration-motor-red decoration-2">精密な保護装置が異常を検知して強制終了</span>する可能性があります。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Hz Meter -->
+        <section class="mb-16 fade-in">
+            <div class="flex items-center mb-6 border-b pb-2 border-gray-300">
+                <h3 class="text-2xl font-bold text-gray-800">2. 危険ラインの可視化</h3>
+            </div>
+
+            <div class="bg-dark-bg text-white p-6 md:p-10 rounded-2xl shadow-2xl">
+                <div class="text-center mb-6">
+                    <span class="text-xs uppercase tracking-tighter text-gray-400">System Frequency Health</span>
+                    <h4 class="text-xl font-bold">ネットワーク周波数ステータス</h4>
+                </div>
+                
+                <!-- Meter Bar -->
+                <div class="relative h-14 bg-gray-900 rounded-xl mb-10 overflow-hidden border border-gray-700 shadow-inner">
+                    <div class="absolute top-0 left-0 h-full w-full meter-bg opacity-90"></div>
+                    <div class="absolute top-0 left-1/2 w-1 h-full bg-white z-10 shadow-[0_0_10px_rgba(255,255,255,0.8)]"></div>
+                    
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-mono font-black text-2xl tracking-widest drop-shadow-lg">
+                        50.00 Hz
+                    </div>
+                </div>
+
+                <!-- Info Cards -->
+                <div class="grid grid-cols-1 gap-4 text-left">
+                    <div class="bg-white/5 border border-white/10 p-4 rounded-xl flex items-center">
+                        <div class="w-16 h-16 rounded-full bg-safe-green/20 flex items-center justify-center mr-5 shrink-0">
+                            <span class="font-mono font-bold text-safe-green text-sm">±0.2</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-safe-green">安全圏（通常運用）</p>
+                            <p class="text-xs text-gray-400">電力会社の自動調整機能が完璧に機能している状態。</p>
+                        </div>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 p-4 rounded-xl flex items-center">
+                        <div class="w-16 h-16 rounded-full bg-clock-yellow/20 flex items-center justify-center mr-5 shrink-0">
+                            <span class="font-mono font-bold text-clock-yellow text-sm">±0.5</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-clock-yellow">警戒領域</p>
+                            <p class="text-xs text-gray-400">予備の発電機をフル回転させて調整中。不安定な状態。</p>
+                        </div>
+                    </div>
+                    <div class="bg-white/5 border border-red-500/30 p-4 rounded-xl flex items-center relative overflow-hidden">
+                        <div class="absolute right-0 top-0 bottom-0 w-24 bg-red-600/10 animate-pulse"></div>
+                        <div class="w-16 h-16 rounded-full bg-motor-red/20 flex items-center justify-center mr-5 shrink-0">
+                            <span class="font-mono font-bold text-motor-red text-sm">-1.0~</span>
+                        </div>
+                        <div class="z-10">
+                            <p class="font-bold text-motor-red">崩壊危険域</p>
+                            <p class="text-xs text-gray-400">発電所のタービンが壊れないよう、発電所自身がシステムから切り離されます。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: UFR -->
+        <section class="mb-16 fade-in">
+            <div class="flex items-center mb-6 border-b pb-2 border-gray-300">
+                <h3 class="text-2xl font-bold text-gray-800">3. 強制停電（UFR）の仕組み</h3>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm flex items-start">
+                    <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center font-black text-gray-400 mr-5 shrink-0">01</div>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        <strong class="text-gray-800">突発的な事故</strong>：巨大な地震などで、主要な発電所が送電網から消えます。供給が需要に追いつかず、周波数が崖を転げ落ちるように低下します。
+                    </p>
+                </div>
+                <div class="bg-red-50 p-6 rounded-xl shadow-md border border-red-100 flex items-start relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-2 opacity-10">
+                        <i class="fa-solid fa-bolt-lightning text-6xl text-motor-red"></i>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-motor-red flex items-center justify-center font-black text-white mr-5 shrink-0 shadow-lg">02</div>
+                    <div class="z-10">
+                        <p class="font-bold text-motor-red mb-1">UFR (周波数低下リレー) の発動</p>
+                        <p class="text-sm text-gray-700 leading-relaxed">
+                            「全地域がブラックアウトする前に、一部を切り捨てる」という苦渋の決断を機械が瞬時に行います。あらかじめ設定された地域の送電を強制的に止め、無理やり需給バランスを戻します。
+                        </p>
+                    </div>
+                </div>
+                <div class="bg-blue-50 p-6 rounded-xl shadow-sm flex items-start">
+                    <div class="w-10 h-10 rounded-full bg-elec-blue flex items-center justify-center font-black text-white mr-5 shrink-0 shadow-lg">03</div>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        <strong class="text-gray-800 text-elec-blue">系統の安定化</strong>：強制停電によって消費量が減り、残った発電所だけで周波数を支えられるようになります。これで日本全土が真っ暗になる最悪の事態を防ぎます。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Column -->
+        <section class="fade-in bg-dark-bg text-white p-8 rounded-3xl mb-12 shadow-2xl border-b-8 border-yellow-500">
+            <div class="flex items-center mb-4">
+                <i class="fa-solid fa-circle-exclamation text-yellow-500 text-3xl mr-4"></i>
+                <h3 class="font-bold text-2xl">ブラックアウトの真の恐怖</h3>
+            </div>
+            <p class="text-sm md:text-base text-gray-300 leading-loose">
+                2018年の北海道の事例では、UFRの作動を上回るスピードで周波数が崩壊しました。
+                電力が完全に失われると、発電所自体を起動するためのポンプや制御盤も動かせなくなります。
+                これを「<span class="text-white font-bold border-b-2 border-yellow-500">ブラックスタート</span>」と呼び、復旧には数日という膨大な時間が必要になるのです。
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-10 border-t border-gray-200 mt-20">
+            <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-4">Reference Sources</p>
+            <div class="flex flex-wrap justify-center gap-4 text-xs font-bold text-gray-500">
+                <span>資源エネルギー庁</span>
+                <span>OCCTO（電力広域的運営推進機関）</span>
+                <span>FEPC（電気事業連合会）</span>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Scroll Animation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>

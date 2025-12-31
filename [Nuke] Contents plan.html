@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原子力資料 全体設計（アイディア整理版）</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-nav: #7f8c8d;
+            --accent-a: #2980b9;
+            --accent-b: #27ae60;
+            --accent-c: #c0392b;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+        }
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        .concept-box {
+            background-color: #eef2f5;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: left;
+            margin-top: 20px;
+            border-left: 5px solid var(--primary-color);
+        }
+        .concept-title {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        /* Section Styles */
+        section {
+            margin-bottom: 40px;
+        }
+        h2 {
+            font-size: 1.4rem;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        /* Structure Diagram */
+        .structure-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .box {
+            padding: 10px 20px;
+            border-radius: 4px;
+            color: white;
+            width: 80%;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .box-nav { background-color: var(--accent-nav); }
+        .box-row {
+            display: flex;
+            gap: 10px;
+            width: 80%;
+            justify-content: center;
+        }
+        .box-a { background-color: var(--accent-a); flex: 1; text-align: center; padding: 10px; border-radius: 4px; color: white; }
+        .box-b { background-color: var(--accent-b); flex: 1; text-align: center; padding: 10px; border-radius: 4px; color: white; }
+        .box-c { background-color: var(--accent-c); flex: 1; text-align: center; padding: 10px; border-radius: 4px; color: white; }
+
+        /* Card Grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        @media (min-width: 768px) {
+            .card-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .card-full {
+                grid-column: span 2;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-top: 4px solid #ccc;
+        }
+        .card h3 {
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Specific Card Colors */
+        .card.nav { border-top-color: var(--accent-nav); }
+        .card.nav h3 { color: var(--accent-nav); }
+        
+        .card.type-a { border-top-color: var(--accent-a); }
+        .card.type-a h3 { color: var(--accent-a); }
+        
+        .card.type-b { border-top-color: var(--accent-b); }
+        .card.type-b h3 { color: var(--accent-b); }
+        
+        .card.type-c { border-top-color: var(--accent-c); }
+        .card.type-c h3 { color: var(--accent-c); }
+
+        .card.aux { border-top-color: #9b59b6; }
+        .card.aux h3 { color: #9b59b6; }
+
+        /* Lists */
+        ul {
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        .tag {
+            display: inline-block;
+            background: #eee;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        .point {
+            font-weight: bold;
+            color: #d35400;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Footer */
+        .next-step {
+            background-color: #d5f5e3;
+            border: 1px solid #abebc6;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>今後作るべき資料の全体設計 <small>（アイディア整理版）</small></h1>
+        <div class="concept-box">
+            <span class="concept-title">🎯 最上位コンセプト</span>
+            <p><strong>目的：</strong>原子力を「推進／反対」させることではない。世の中で議論・判断するための最低限かつ誤解されにくい“思考の足場”を提供する。</p>
+            <p><strong>スタンス：</strong>ニュートラル、一次情報・物理法則重視、感情論と対立構造を作らない。</p>
+        </div>
+    </header>
+
+    <section>
+        <h2>🧱 資料のレイヤー構造</h2>
+        <p>資料は「1本」ではなく、相手が「読む順番」と「深さ」を選べる構造にします。</p>
+        
+        <div class="structure-diagram">
+            <div class="box box-nav">① ナビゲーション資料（地図）</div>
+            <div class="box-row">
+                <div class="box-a">② 基礎編<br><small>（物理・仕組み）</small></div>
+                <div class="box-b">③ 電力編<br><small>（需給・インフラ）</small></div>
+                <div class="box-c">④ 事故編<br><small>（リスク・教訓）</small></div>
+            </div>
+            <div style="font-size: 0.8rem; color: #666;">⑤ 補助資料（対話・Q&A）</div>
+        </div>
+        <p class="point">👉 入口は浅く、奥は深い。途中で止まっても誤解しにくい設計。</p>
+    </section>
+
+    <section>
+        <h2>📚 資料構成の詳細</h2>
+        <div class="card-grid">
+            
+            <div class="card nav card-full">
+                <h3>🗺️ ① ナビゲーション資料（最初に見せる1本）</h3>
+                <p><strong>役割：</strong>「今日はどこまで話すのか」を示す地図。議論の前提をそろえる。</p>
+                <div>
+                    <span class="tag">かなり薄くてOK</span>
+                    <span class="tag">合意形成用</span>
+                </div>
+                <h4>主な内容</h4>
+                <ul>
+                    <li>なぜ原子力は感情論になりやすいのか</li>
+                    <li>この話題には「技術」「インフラ」「リスク」の3つの論点がある</li>
+                    <li>それぞれは「別の話」であり、混ぜると誤解が起きる</li>
+                </ul>
+                <p class="point">👉 ここでは結論を出さない。「今日は②まで」という使い方をする。</p>
+            </div>
+
+            <div class="card type-a">
+                <h3>⚛️ ② 資料A｜原子力発電の基礎知識</h3>
+                <p><strong>役割：</strong>スタートラインをそろえる。知らないまま賛否を語らせないための土台。</p>
+                <div>
+                    <span class="tag">完全ニュートラル</span>
+                    <span class="tag">教科書ポジション</span>
+                </div>
+                <h4>カバー範囲</h4>
+                <ul>
+                    <li>原子力発電の仕組み</li>
+                    <li>放射線・被ばく・mSvの基本</li>
+                    <li>廃棄物の種類と管理</li>
+                    <li>平常運転時の多重防護</li>
+                </ul>
+                <p class="point">👉 事故の話や感情論には触れない。「ここまで知らないと進めない」資料。</p>
+            </div>
+
+            <div class="card type-b">
+                <h3>⚡ ③ 資料B｜電力需要と供給のバランス</h3>
+                <p><strong>役割：</strong>電力は思想ではなく「物理・工学」で動いていると理解させる。</p>
+                <div>
+                    <span class="tag">インフラの現実</span>
+                    <span class="tag">物理・工学</span>
+                </div>
+                <h4>カバー範囲</h4>
+                <ul>
+                    <li>電力は貯められない（同時同量の原則）</li>
+                    <li>需要と供給がズレると何が起きるか</li>
+                    <li>安定電源の役割とベストミックス</li>
+                    <li>現在の電源構成（一次情報）</li>
+                </ul>
+                <p class="point">👉 「原子力が必要」とは言わず、「存在している理由」を説明する。</p>
+            </div>
+
+            <div class="card type-c">
+                <h3>⚠️ ④ 資料C｜原子力事故の分析</h3>
+                <p><strong>役割：</strong>恐怖ではなく、構造として事故を見る。「事故＝原子力の本質」という短絡を防ぐ。</p>
+                <div>
+                    <span class="tag">失敗学</span>
+                    <span class="tag">リスク管理</span>
+                </div>
+                <h4>カバー範囲</h4>
+                <ul>
+                    <li>チェルノブイリ（設計・運用の問題）</li>
+                    <li>福島第一（複合災害・想定外）</li>
+                    <li>なぜ後処理が難しいのか</li>
+                    <li>「防げた点」と「当時の限界」</li>
+                </ul>
+                <p class="point">👉 最も誤解されやすいので独立させる。責任追及ではなく構造分析。</p>
+            </div>
+
+            <div class="card aux card-full">
+                <h3>💬 ⑤ 対話用・補助資料（余力があれば）</h3>
+                <p><strong>役割：</strong>議論が荒れた時の緩衝材。本編に入れないQ&A。</p>
+                <ul>
+                    <li>「安全」と「安心」の違い</li>
+                    <li>ゼロリスク思考の問題点</li>
+                    <li>科学と社会のズレ</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <section>
+        <h2>🧠 思考との対応関係</h2>
+        <p>「全部1本」は無理なので、分解して再構成するための対応表。</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>要説明項目</th>
+                    <th>対応する資料</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>技術・放射線</td>
+                    <td><strong>資料A（基礎知識）</strong></td>
+                </tr>
+                <tr>
+                    <td>電力インフラ</td>
+                    <td><strong>資料B（需給バランス）</strong></td>
+                </tr>
+                <tr>
+                    <td>事故と教訓</td>
+                    <td><strong>資料C（事故分析）</strong></td>
+                </tr>
+                <tr>
+                    <td>社会受容・風評</td>
+                    <td><strong>補助資料</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <div class="next-step">
+        <h3>🚀 結論と次のステップ</h3>
+        <p><strong>設計の結論：</strong>分ける判断は正しい。1本にまとめない方が伝わる。まずは「地図」と「基礎」から。</p>
+        <hr style="border: 0; border-top: 1px solid #abebc6; margin: 15px 0;">
+        <p><strong>Next Actions:</strong></p>
+        <ol>
+            <li>この構成で「目次レベル」を確定する</li>
+            <li>どれを「最初の公開資料」にするか決める</li>
+            <li>想定読者（一般／学生／大人）を決める（→ これで「作らないもの」が決まる）</li>
+        </ol>
+    </div>
+
+</div>
+
+</body>
+</html>
