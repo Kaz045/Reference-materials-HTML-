@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>館山神社の聖徳太子石碑と地域の歴史</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;500;700&family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'japan-red': '#b91c1c', /* 神社の赤 */
+                        'japan-dark': '#1f2937',
+                        'japan-bg': '#fcfaf2', /* 和紙色 */
+                        'japan-gold': '#d4af37',
+                        'japan-navy': '#1e3a8a',
+                    },
+                    fontFamily: {
+                        'serif': ['"Shippori Mincho"', '"Noto Serif JP"', 'serif'],
+                        'sans': ['"Noto Sans JP"', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'washi': "url('https://www.transparenttextures.com/patterns/cream-paper.png')",
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #fcfaf2;
+            background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+            font-family: 'Shippori Mincho', serif;
+            color: #333;
+            line-height: 2.0;
+        }
+        .vertical-text {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            letter-spacing: 0.1em;
+        }
+        .fade-in {
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .section-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 4rem 0;
+        }
+        .section-divider::before, .section-divider::after {
+            content: "";
+            height: 1px;
+            background-color: #ccc;
+            flex-grow: 1;
+            max-width: 200px;
+        }
+        .section-divider span {
+            padding: 0 1rem;
+            color: #b91c1c;
+            font-size: 1.5rem;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header / Hero Section -->
+    <header class="relative w-full h-screen min-h-[600px] flex flex-col justify-center items-center text-center overflow-hidden border-b-8 border-japan-red">
+        <div class="absolute inset-0 z-0 bg-gray-900">
+            <!-- 背景イメージとして、神社の杜や石碑のイメージを想定 -->
+            <img src="https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?q=80&w=2070&auto=format&fit=crop" alt="神社の雰囲気" class="w-full h-full object-cover opacity-40">
+        </div>
+        <div class="relative z-10 p-8 max-w-4xl mx-auto text-white fade-in">
+            <p class="text-lg md:text-xl mb-4 tracking-widest">茨城県日立市川尻町</p>
+            <h1 class="text-4xl md:text-6xl font-bold mb-8 leading-tight">
+                館山神社の<br><span class="text-japan-gold">聖徳太子石碑</span>の謎
+            </h1>
+            <div class="h-16 w-0.5 bg-white mx-auto mb-6"></div>
+            <p class="text-xl md:text-2xl font-light mb-8">
+                なぜ神社の入口に<br>仏教の聖人「聖徳太子」が祀られているのか？
+            </p>
+            <p class="text-sm md:text-base opacity-80 mt-4">
+                地域に根付く「職人信仰」と「歴史の記憶」を紐解く
+            </p>
+        </div>
+    </header>
+
+    <!-- Content Wrapper -->
+    <main class="max-w-5xl mx-auto px-6 py-16">
+
+        <!-- Introduction -->
+        <section class="mb-20 text-center fade-in">
+            <p class="text-lg md:text-xl leading-loose max-w-3xl mx-auto">
+                日立市川尻町、館山神社の入口に佇む「聖徳太子」と刻まれた石碑。<br>
+                祭神とは直接関係のないこの石碑は、かつてこの地で生きた人々の<br>
+                <span class="text-japan-red font-bold border-b border-japan-red">信仰と生業（なりわい）</span>の証でした。
+            </p>
+        </section>
+
+        <!-- Chapter 1: 石碑の由来 -->
+        <section class="mb-24">
+            <div class="flex flex-col md:flex-row items-start gap-12">
+                <div class="md:w-1/3 sticky top-10">
+                    <h2 class="text-3xl font-bold border-l-4 border-japan-red pl-4 mb-4 text-gray-800">
+                        第一章<br>
+                        <span class="text-lg font-normal text-gray-600 mt-2 block">石碑と職人信仰</span>
+                    </h2>
+                    <p class="text-sm text-gray-500 mb-6">The Origin of the Monument</p>
+                    <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-japan-navy">
+                        <i class="fa-solid fa-monument text-4xl text-gray-400 mb-4 block text-center"></i>
+                        <h3 class="text-center font-bold mb-2">聖徳太子碑</h3>
+                        <p class="text-sm">川尻町・館山神社入口に鎮座。大正後期（1920年前後）の建立と推測される。</p>
+                    </div>
+                </div>
+
+                <div class="md:w-2/3 space-y-12">
+                    <!-- Point 1 -->
+                    <div class="bg-white p-8 rounded shadow-sm relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 text-9xl text-gray-100 opacity-50 select-none pointer-events-none">
+                            <i class="fa-solid fa-hammer"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-japan-navy mb-4 flex items-center">
+                            <span class="bg-japan-navy text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">1</span>
+                            職人の守護神としての聖徳太子
+                        </h3>
+                        <p>
+                            聖徳太子は法隆寺建立の伝承などから、古くから<span class="font-bold text-gray-800">「職人の神様」</span>として崇敬されてきました。<br>
+                            大工、左官、木挽（こびき）、桶職人などの職人たちが「太子講（たいしこう）」と呼ばれる同業者組合を作り、太子の命日に集まって講を催す風習が全国的にありました。
+                        </p>
+                    </div>
+
+                    <!-- Point 2 -->
+                    <div class="bg-white p-8 rounded shadow-sm relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 text-9xl text-gray-100 opacity-50 select-none pointer-events-none">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-japan-navy mb-4 flex items-center">
+                            <span class="bg-japan-navy text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">2</span>
+                            大正時代の建立背景
+                        </h3>
+                        <p>
+                            館山神社の石碑も、地域の職人たちが聖徳太子没後1300年遠忌（大正10年頃）を記念して建立した可能性が高いと考えられます。<br>
+                            近隣の久慈町割山には、「千三百年紀年」「桶師組合」と刻まれた大正8年の石碑が現存しており、これと同様の背景を持つと推測されます。
+                        </p>
+                    </div>
+
+                    <!-- Point 3 -->
+                    <div class="bg-white p-8 rounded shadow-sm relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 text-9xl text-gray-100 opacity-50 select-none pointer-events-none">
+                            <i class="fa-solid fa-torii-gate"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-japan-navy mb-4 flex items-center">
+                            <span class="bg-japan-navy text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">3</span>
+                            神社と石碑の不思議な関係
+                        </h3>
+                        <p>
+                            なぜ神社の入口に？<br>
+                            それは、神社の御祭神とは別に、石碑そのものを「遥拝（遠くから拝む）対象」とするためでした。明治の神仏分離以降も、職人たちは氏神様の境内を借りて、自分たちの守り神である太子への信仰を続けていたのです。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider">
+            <span><i class="fa-solid fa-circle-notch fa-spin"></i></span>
+        </div>
+
+        <!-- Chapter 2: 地域の歴史 -->
+        <section class="mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold inline-block border-b-2 border-japan-red pb-2">第二章　川尻と館山神社の歴史</h2>
+                <p class="text-sm text-gray-500 mt-2">History of the Region</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <!-- Card 1 -->
+                <div class="bg-stone-100 p-6 rounded-lg border border-stone-200">
+                    <div class="flex items-center mb-4 text-japan-red">
+                        <i class="fa-solid fa-water text-2xl mr-3"></i>
+                        <h3 class="text-xl font-bold">海からの遷座と「金色姫伝説」</h3>
+                    </div>
+                    <p class="text-sm mb-4">
+                        館山神社は平安末期の創建と伝わり、かつては海岸部（国井浜）にありました。嘉応元年（1169年）に現在の丘の上へ遷座。<br>
+                        同敷地内の「蚕養（こがい）神社」には、蚕の繭を持って漂着した異国の姫「金色姫伝説」が残ります。これは筑波方面から伝播した養蚕信仰の物語です。
+                    </p>
+                    <div class="w-full h-32 bg-gray-200 rounded overflow-hidden relative">
+                         <div class="absolute inset-0 flex items-center justify-center text-gray-500 font-bold bg-gray-300">
+                                                      </div>
+                    </div>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="bg-stone-100 p-6 rounded-lg border border-stone-200">
+                    <div class="flex items-center mb-4 text-japan-red">
+                        <i class="fa-brands fa-fort-awesome text-2xl mr-3"></i>
+                        <h3 class="text-xl font-bold">中世の城館「館山館」</h3>
+                    </div>
+                    <p class="text-sm mb-4">
+                        神社のある丘は、中世には「館山館（たてやまだて）」という城館でした。交通の要衝であり防衛拠点でもあった場所です。<br>
+                        現在も裏手に土塁や堀の痕跡が残るといわれますが、近代の国道6号敷設により地形は大きく変化しました。
+                    </p>
+                    <div class="w-full h-32 bg-gray-200 rounded overflow-hidden relative">
+                         <div class="absolute inset-0 flex items-center justify-center text-gray-500 font-bold bg-gray-300">
+                                                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mito Komon Column -->
+            <div class="bg-white p-8 rounded-xl shadow-lg border-l-8 border-japan-gold">
+                <h3 class="text-xl font-bold mb-4 flex items-center">
+                    <span class="text-japan-gold text-2xl mr-2"><i class="fa-solid fa-clover"></i></span>
+                    水戸黄門（徳川光圀）と太子信仰
+                </h3>
+                <p class="mb-4">
+                    江戸時代、水戸藩主・徳川光圀もこの地と深く関わりました。光圀は寺社整理（神仏分離）を進める一方で、由緒ある寺院や文化財を保護しました。
+                </p>
+                <div class="bg-yellow-50 p-4 rounded text-sm text-gray-700">
+                    <strong>歴史の交差点：</strong><br>
+                    光圀は、水戸の善重寺に鎌倉時代作の貴重な「聖徳太子立像」を安置させるなど、太子信仰の保護者でもありました。川尻の庶民による石碑建立も、こうした藩内の歴史的土壌の上に成り立っているのです。
+                </div>
+            </div>
+        </section>
+
+        <!-- Chapter 3: 広がる信仰 -->
+        <section class="mb-24">
+            <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">
+                第三章　常陸北部に広がる太子信仰
+                <span class="block text-sm font-normal text-gray-500 mt-2">Faith in Northern Hitachi</span>
+            </h2>
+
+            <div class="relative border-l-2 border-gray-300 ml-4 md:ml-12 space-y-12 pb-12">
+                <!-- Item 1 -->
+                <div class="relative pl-8 md:pl-12">
+                    <span class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-japan-red border-4 border-white shadow"></span>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">高萩市・敏満寺（びんまんじ）の伝承</h3>
+                    <p class="text-gray-600 mb-2">
+                        中世の大寺院・敏満寺は「聖徳太子ゆかりの寺」とも伝えられ、常陸国における信仰の深さを示しています。
+                    </p>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="relative pl-8 md:pl-12">
+                    <span class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-japan-navy border-4 border-white shadow"></span>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">文化財としての太子像</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                        <div class="bg-white p-4 rounded shadow border border-gray-100">
+                            <h4 class="font-bold text-japan-red mb-1">聖徳太子16歳孝養像</h4>
+                            <p class="text-xs text-gray-500 mb-2">高萩市（茨城県指定文化財）</p>
+                            <p class="text-sm">父・用明天皇の病気平癒を祈る姿。鎌倉時代作の精巧な寄木造。</p>
+                        </div>
+                        <div class="bg-white p-4 rounded shadow border border-gray-100">
+                            <h4 class="font-bold text-japan-red mb-1">聖徳太子坐像</h4>
+                            <p class="text-xs text-gray-500 mb-2">日立市金沢町・覚念寺</p>
+                            <p class="text-sm">室町時代末期作。地域の人々（毘沙門講）の手で大切に守られている。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="relative pl-8 md:pl-12">
+                    <span class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-japan-gold border-4 border-white shadow"></span>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">浄土真宗と親鸞</h3>
+                    <p class="text-gray-600">
+                        常陸国を拠点とした親鸞聖人は、聖徳太子を「和国の教主」と崇めました。真宗の広がりとともに、太子信仰もこの地に深く根を下ろしました。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusion -->
+        <section class="bg-japan-dark text-white p-10 md:p-16 rounded-lg text-center shadow-xl relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/asanoha-400px.png')]"></div>
+            <div class="relative z-10">
+                <h2 class="text-2xl md:text-3xl font-serif mb-6">時代を超える信仰の記憶</h2>
+                <p class="leading-loose mb-8 max-w-2xl mx-auto">
+                    館山神社の「聖徳太子」石碑。<br>
+                    それは単なる石の塊ではなく、<br>
+                    神仏分離の波を越え、職人たちの誇りと祈りを<br>
+                    現代に伝える「タイムカプセル」なのです。
+                </p>
+                <div class="inline-block border border-white/30 px-6 py-2 rounded-full text-sm tracking-widest">
+                    茨城県日立市川尻町
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer / References -->
+        <footer class="mt-20 pt-10 border-t border-gray-300 text-sm text-gray-600">
+            <div class="max-w-4xl mx-auto">
+                <h4 class="font-bold mb-4 text-center">参考文献・出典</h4>
+                <ul class="list-disc pl-5 space-y-2 text-xs md:text-sm">
+                    <li>茨城県笠間市教育委員会 「南友部の聖徳太子碑」解説</li>
+                    <li>日立市の郷土史サイト『日立市の歴史点描』「久慈町割山の聖徳太子碑」</li>
+                    <li>常陸国ふしぎ探検隊（個人ブログ）「蚕養神社と館山神社探検記」</li>
+                    <li>SACの部屋「常磐旅行レポ：館山神社と蚕養神社」</li>
+                    <li>小滝ちひろ「聖徳太子信仰のタテヨコその3」（note記事）</li>
+                    <li>茨城県教育委員会『茨城県の文化財』</li>
+                    <li>じゃらん観光ガイド「聖徳太子16才立像（高萩市）」</li>
+                </ul>
+                <p class="text-center mt-10 opacity-50">&copy; Research Summary Presentation</p>
+            </div>
+        </footer>
+
+    </main>
+</body>
+</html>
