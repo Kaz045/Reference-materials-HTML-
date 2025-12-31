@@ -3,349 +3,450 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>原子力資料 全体設計（アイディア整理版）</title>
+    <title>原子力発電学習プロジェクト｜内部方針資料 v2.0</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Noto Sans JP -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#1e293b', // slate-800
+                            primary: '#3b82f6', // blue-500
+                            accent: '#64748b', // slate-500
+                            bg: '#f8fafc', // slate-50
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --primary-color: #2c3e50;
-            --accent-nav: #7f8c8d;
-            --accent-a: #2980b9;
-            --accent-b: #27ae60;
-            --accent-c: #c0392b;
-            --bg-color: #f4f7f6;
-            --card-bg: #ffffff;
-        }
         body {
-            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
             line-height: 1.6;
-            color: #333;
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 20px;
         }
-        .container {
-            max-width: 960px;
-            margin: 0 auto;
+        .section-title {
+            position: relative;
+            padding-left: 1rem;
         }
-        /* Header */
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 20px;
-            background: var(--card-bg);
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #3b82f6;
+            border-radius: 2px;
         }
-        h1 {
-            font-size: 1.8rem;
-            color: var(--primary-color);
-            margin-bottom: 10px;
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
-        .concept-box {
-            background-color: #eef2f5;
-            padding: 15px;
-            border-radius: 6px;
-            text-align: left;
-            margin-top: 20px;
-            border-left: 5px solid var(--primary-color);
-        }
-        .concept-title {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-            color: var(--primary-color);
-        }
-        
-        /* Section Styles */
-        section {
-            margin-bottom: 40px;
-        }
-        h2 {
-            font-size: 1.4rem;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-        }
-        
-        /* Structure Diagram */
-        .structure-diagram {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: center;
-            font-weight: bold;
-            margin: 20px 0;
-        }
-        .box {
-            padding: 10px 20px;
-            border-radius: 4px;
-            color: white;
-            width: 80%;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .box-nav { background-color: var(--accent-nav); }
-        .box-row {
-            display: flex;
-            gap: 10px;
-            width: 80%;
-            justify-content: center;
-        }
-        .box-a { background-color: var(--accent-a); flex: 1; text-align: center; padding: 10px; border-radius: 4px; color: white; }
-        .box-b { background-color: var(--accent-b); flex: 1; text-align: center; padding: 10px; border-radius: 4px; color: white; }
-        .box-c { background-color: var(--accent-c); flex: 1; text-align: center; padding: 10px; border-radius: 4px; color: white; }
-
-        /* Card Grid */
-        .card-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-        @media (min-width: 768px) {
-            .card-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .card-full {
-                grid-column: span 2;
-            }
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            border-top: 4px solid #ccc;
-        }
-        .card h3 {
-            margin-top: 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        /* Specific Card Colors */
-        .card.nav { border-top-color: var(--accent-nav); }
-        .card.nav h3 { color: var(--accent-nav); }
-        
-        .card.type-a { border-top-color: var(--accent-a); }
-        .card.type-a h3 { color: var(--accent-a); }
-        
-        .card.type-b { border-top-color: var(--accent-b); }
-        .card.type-b h3 { color: var(--accent-b); }
-        
-        .card.type-c { border-top-color: var(--accent-c); }
-        .card.type-c h3 { color: var(--accent-c); }
-
-        .card.aux { border-top-color: #9b59b6; }
-        .card.aux h3 { color: #9b59b6; }
-
-        /* Lists */
-        ul {
-            padding-left: 20px;
-            margin-bottom: 10px;
-        }
-        li {
-            margin-bottom: 5px;
-        }
-        .tag {
-            display: inline-block;
-            background: #eee;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            margin-right: 5px;
-            margin-bottom: 5px;
-        }
-        .point {
-            font-weight: bold;
-            color: #d35400;
-        }
-
-        /* Table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            margin-top: 10px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-
-        /* Footer */
-        .next-step {
-            background-color: #d5f5e3;
-            border: 1px solid #abebc6;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 40px;
+        .card-shadow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
     </style>
 </head>
-<body>
+<body class="bg-slate-50 min-h-screen">
 
-<div class="container">
-
-    <header>
-        <h1>今後作るべき資料の全体設計 <small>（アイディア整理版）</small></h1>
-        <div class="concept-box">
-            <span class="concept-title">🎯 最上位コンセプト</span>
-            <p><strong>目的：</strong>原子力を「推進／反対」させることではない。世の中で議論・判断するための最低限かつ誤解されにくい“思考の足場”を提供する。</p>
-            <p><strong>スタンス：</strong>ニュートラル、一次情報・物理法則重視、感情論と対立構造を作らない。</p>
+    <!-- Header -->
+    <header class="bg-slate-800 text-white py-6 sticky top-0 z-50 shadow-md">
+        <div class="container mx-auto px-4 max-w-5xl flex justify-between items-center">
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold tracking-tight">原子力発電学習プロジェクト</h1>
+                <p class="text-slate-400 text-sm mt-1">内部方針資料 v2.0（内部用・改訂版）</p>
+            </div>
+            <div class="hidden md:block">
+                <span class="bg-blue-600 text-xs font-semibold px-3 py-1 rounded-full text-white tracking-widest">CONFIDENTIAL</span>
+            </div>
         </div>
     </header>
 
-    <section>
-        <h2>🧱 資料のレイヤー構造</h2>
-        <p>資料は「1本」ではなく、相手が「読む順番」と「深さ」を選べる構造にします。</p>
-        
-        <div class="structure-diagram">
-            <div class="box box-nav">① ナビゲーション資料（地図）</div>
-            <div class="box-row">
-                <div class="box-a">② 基礎編<br><small>（物理・仕組み）</small></div>
-                <div class="box-b">③ 電力編<br><small>（需給・インフラ）</small></div>
-                <div class="box-c">④ 事故編<br><small>（リスク・教訓）</small></div>
-            </div>
-            <div style="font-size: 0.8rem; color: #666;">⑤ 補助資料（対話・Q&A）</div>
-        </div>
-        <p class="point">👉 入口は浅く、奥は深い。途中で止まっても誤解しにくい設計。</p>
-    </section>
+    <main class="container mx-auto px-4 py-8 max-w-5xl space-y-12">
 
-    <section>
-        <h2>📚 資料構成の詳細</h2>
-        <div class="card-grid">
+        <!-- 0. 位置づけ -->
+        <section class="bg-white rounded-xl p-6 md:p-8 card-shadow border-l-4 border-slate-400">
+            <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center">
+                <i class="fa-solid fa-crosshairs mr-3 text-slate-500"></i>
+                0. この資料の位置づけ
+            </h2>
+            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                <p class="font-bold text-slate-700 mb-3">
+                    お義父さんとKazが共通認識を持ち、迷わず意思決定するための内部設計書
+                </p>
+                <ul class="space-y-2 text-sm text-slate-600">
+                    <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>外部公開を前提としない</li>
+                    <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>表現の丁寧さよりも、思考の正確さと構造を優先する</li>
+                    <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>今後作成するすべての資料・プレゼンの「判断基準」となる</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 1. 根本目的 -->
+        <section>
+            <h2 class="section-title text-2xl font-bold text-slate-800 mb-6">1. プロジェクトの根本目的</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- 1.1 何を目指すのか -->
+                <div class="bg-white p-6 rounded-xl card-shadow">
+                    <h3 class="text-lg font-bold text-blue-600 mb-4 border-b pb-2">1.1 何を目指すのか</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start bg-red-50 p-3 rounded text-sm text-red-700 border border-red-100">
+                            <i class="fa-solid fa-xmark mt-1 mr-2 text-red-500"></i>
+                            <div>
+                                <strong>推進／反対</strong>のどちらかに誘導することは目的ではない
+                            </div>
+                        </div>
+                        <div class="flex items-start bg-blue-50 p-3 rounded text-sm text-blue-800 border border-blue-100">
+                            <i class="fa-regular fa-lightbulb mt-1 mr-2 text-blue-500"></i>
+                            <div>
+                                「感情論」「二項対立」「知識不足のままの断定」から距離を取り、<br>
+                                <strong class="text-blue-700 text-base underline decoration-blue-300">学んだ上で考えるための土台</strong>を提供する
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1.2 到達点 -->
+                <div class="bg-white p-6 rounded-xl card-shadow flex flex-col justify-center">
+                    <h3 class="text-lg font-bold text-blue-600 mb-4 border-b pb-2">1.2 到達点（ゴール）</h3>
+                    <div class="text-center mb-4">
+                        <p class="text-sm text-slate-500 mb-2">読み手が以下を<span class="font-bold text-slate-700">別の論点</span>として理解できる状態</p>
+                        <div class="flex flex-wrap justify-center gap-2 text-xs font-bold text-slate-700 mb-4">
+                            <span class="bg-slate-100 px-3 py-1 rounded">原子力</span>
+                            <span class="bg-slate-100 px-3 py-1 rounded">電力インフラ</span>
+                            <span class="bg-slate-100 px-3 py-1 rounded">環境・管理</span>
+                            <span class="bg-slate-100 px-3 py-1 rounded">事故</span>
+                        </div>
+                        <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-4 rounded-lg shadow-md">
+                            <i class="fa-solid fa-scale-balanced mb-2 text-xl"></i>
+                            <p class="font-bold">判断や結論は、読み手自身に委ねる</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. 基本スタンス -->
+        <section class="bg-slate-800 text-white rounded-xl p-8 shadow-lg">
+            <h2 class="text-xl font-bold mb-6 flex items-center">
+                <i class="fa-solid fa-shield-halved mr-3 text-blue-400"></i>
+                2. 基本スタンス（厳守事項）
+            </h2>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-slate-700/50 p-4 rounded border border-slate-600 flex items-start">
+                    <i class="fa-solid fa-scale-unbalanced text-blue-400 mt-1 mr-3"></i>
+                    <span>ニュートラルであること</span>
+                </div>
+                <div class="bg-slate-700/50 p-4 rounded border border-slate-600 flex items-start">
+                    <i class="fa-solid fa-flask text-blue-400 mt-1 mr-3"></i>
+                    <span>一次情報・工学的事実・物理法則を重視</span>
+                </div>
+                <div class="bg-slate-700/50 p-4 rounded border border-slate-600 flex items-start">
+                    <i class="fa-solid fa-book text-blue-400 mt-1 mr-3"></i>
+                    <span>「安全」「危険」の定義を明確化</span>
+                </div>
+                <div class="bg-slate-700/50 p-4 rounded border border-slate-600 flex items-start">
+                    <i class="fa-solid fa-heart-crack text-red-400 mt-1 mr-3"></i>
+                    <span>恐怖や安心を煽る表現の禁止</span>
+                </div>
+                <div class="bg-slate-700/50 p-4 rounded border border-slate-600 flex items-start">
+                    <i class="fa-solid fa-user-xmark text-red-400 mt-1 mr-3"></i>
+                    <span>専門家マウント・感情的説得の禁止</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 4つの論点 -->
+        <section>
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                <h2 class="section-title text-2xl font-bold text-slate-800">3. 本プロジェクトで扱う4つの論点</h2>
+                <span class="bg-red-100 text-red-600 text-xs font-bold px-3 py-1 rounded-full border border-red-200 w-fit">
+                    <i class="fa-solid fa-triangle-exclamation mr-1"></i> 混ぜない・意図的に分離して扱う
+                </span>
+            </div>
             
-            <div class="card nav card-full">
-                <h3>🗺️ ① ナビゲーション資料（最初に見せる1本）</h3>
-                <p><strong>役割：</strong>「今日はどこまで話すのか」を示す地図。議論の前提をそろえる。</p>
-                <div>
-                    <span class="tag">かなり薄くてOK</span>
-                    <span class="tag">合意形成用</span>
+            <div class="grid lg:grid-cols-2 gap-6">
+                <!-- 論点1 -->
+                <div class="bg-white rounded-xl overflow-hidden card-shadow flex flex-col border-t-4 border-green-500">
+                    <div class="p-4 bg-green-50 border-b border-green-100">
+                        <span class="text-xs font-bold text-green-600 block mb-1">論点① 技術・科学</span>
+                        <h3 class="text-lg font-bold text-slate-800">原子力発電の基礎知識</h3>
+                    </div>
+                    <div class="p-5 flex-grow">
+                        <p class="text-sm text-slate-500 mb-3 bg-slate-50 p-2 rounded border border-slate-100">
+                            <strong class="text-slate-700">役割：</strong>議論のスタートラインをそろえる
+                        </p>
+                        <ul class="space-y-1.5 text-sm text-slate-700">
+                            <li class="flex items-start"><i class="fa-solid fa-circle-dot text-[8px] text-green-500 mt-1.5 mr-2"></i>原子力発電の仕組み</li>
+                            <li class="flex items-start"><i class="fa-solid fa-circle-dot text-[8px] text-green-500 mt-1.5 mr-2"></i>放射線・被ばくの基本</li>
+                            <li class="flex items-start"><i class="fa-solid fa-circle-dot text-[8px] text-green-500 mt-1.5 mr-2"></i>平常運転時の安全設計（多重防護）</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-100 px-6 py-2 text-[10px] text-slate-500 italic">
+                        ※ 事故・環境影響の話は原則として含めない
+                    </div>
                 </div>
-                <h4>主な内容</h4>
-                <ul>
-                    <li>なぜ原子力は感情論になりやすいのか</li>
-                    <li>この話題には「技術」「インフラ」「リスク」の3つの論点がある</li>
-                    <li>それぞれは「別の話」であり、混ぜると誤解が起きる</li>
-                </ul>
-                <p class="point">👉 ここでは結論を出さない。「今日は②まで」という使い方をする。</p>
-            </div>
 
-            <div class="card type-a">
-                <h3>⚛️ ② 資料A｜原子力発電の基礎知識</h3>
-                <p><strong>役割：</strong>スタートラインをそろえる。知らないまま賛否を語らせないための土台。</p>
-                <div>
-                    <span class="tag">完全ニュートラル</span>
-                    <span class="tag">教科書ポジション</span>
+                <!-- 論点2 -->
+                <div class="bg-white rounded-xl overflow-hidden card-shadow flex flex-col border-t-4 border-blue-500">
+                    <div class="p-4 bg-blue-50 border-b border-blue-100">
+                        <span class="text-xs font-bold text-blue-600 block mb-1">論点② インフラ・工学</span>
+                        <h3 class="text-lg font-bold text-slate-800">電力需要と供給のバランス</h3>
+                    </div>
+                    <div class="p-5 flex-grow">
+                        <p class="text-sm text-slate-500 mb-3 bg-slate-50 p-2 rounded border border-slate-100">
+                            <strong class="text-slate-700">役割：</strong>電力を「物理的制約のある社会基盤」として理解する
+                        </p>
+                        <ul class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm text-slate-700">
+                            <li class="flex items-start"><i class="fa-solid fa-circle-dot text-[8px] text-blue-500 mt-1.5 mr-2"></i>電力は貯められない</li>
+                            <li class="flex items-start"><i class="fa-solid fa-circle-dot text-[8px] text-blue-500 mt-1.5 mr-2"></i>周波数・系統安定</li>
+                            <li class="flex items-start"><i class="fa-solid fa-circle-dot text-[8px] text-blue-500 mt-1.5 mr-2"></i>需給ズレの影響</li>
+                            <li class="flex items-start"><i class="fa-solid fa-circle-dot text-[8px] text-blue-500 mt-1.5 mr-2"></i>電源ベストミックス</li>
+                            <li class="flex items-start"><i class="fa-solid fa-circle-dot text-[8px] text-blue-500 mt-1.5 mr-2"></i>安定電源の役割</li>
+                            <li class="flex items-start"><i class="fa-solid fa-circle-dot text-[8px] text-blue-500 mt-1.5 mr-2"></i>現在の電源構成</li>
+                        </ul>
+                    </div>
                 </div>
-                <h4>カバー範囲</h4>
-                <ul>
-                    <li>原子力発電の仕組み</li>
-                    <li>放射線・被ばく・mSvの基本</li>
-                    <li>廃棄物の種類と管理</li>
-                    <li>平常運転時の多重防護</li>
-                </ul>
-                <p class="point">👉 事故の話や感情論には触れない。「ここまで知らないと進めない」資料。</p>
-            </div>
 
-            <div class="card type-b">
-                <h3>⚡ ③ 資料B｜電力需要と供給のバランス</h3>
-                <p><strong>役割：</strong>電力は思想ではなく「物理・工学」で動いていると理解させる。</p>
-                <div>
-                    <span class="tag">インフラの現実</span>
-                    <span class="tag">物理・工学</span>
+                <!-- 論点3 (NEW) -->
+                <div class="bg-white rounded-xl overflow-hidden card-shadow flex flex-col border-t-4 border-cyan-500">
+                    <div class="p-4 bg-cyan-50 border-b border-cyan-100">
+                        <span class="text-xs font-bold text-cyan-600 block mb-1">論点③ 公害・管理能力</span>
+                        <h3 class="text-lg font-bold text-slate-800">環境汚染・環境管理</h3>
+                    </div>
+                    <div class="p-5 flex-grow">
+                        <p class="text-sm text-slate-500 mb-3 bg-slate-50 p-2 rounded border border-slate-100">
+                            <strong class="text-slate-700">役割：</strong>「環境に良い／悪い」という単純化から切り離す
+                        </p>
+                        <ul class="space-y-1.5 text-sm text-slate-700">
+                            <li class="flex items-start"><i class="fa-solid fa-circle-dot text-[8px] text-cyan-500 mt-1.5 mr-2"></i>「処理・処分」の定義（消すことではない）</li>
+                            <li class="flex items-start"><i class="fa-solid fa-circle-dot text-[8px] text-cyan-500 mt-1.5 mr-2"></i>廃棄物・処理水は事故に関わらず「管理」の問題</li>
+                            <li class="flex items-start"><i class="fa-solid fa-circle-dot text-[8px] text-cyan-500 mt-1.5 mr-2"></i>公害の教訓（水俣病等）と信頼形成</li>
+                        </ul>
+                    </div>
+                    <div class="bg-cyan-100 px-6 py-2 text-[10px] text-cyan-700 font-bold">
+                        重要：『環境汚染＝事故』という短絡を防ぐ独立した軸
+                    </div>
                 </div>
-                <h4>カバー範囲</h4>
-                <ul>
-                    <li>電力は貯められない（同時同量の原則）</li>
-                    <li>需要と供給がズレると何が起きるか</li>
-                    <li>安定電源の役割とベストミックス</li>
-                    <li>現在の電源構成（一次情報）</li>
-                </ul>
-                <p class="point">👉 「原子力が必要」とは言わず、「存在している理由」を説明する。</p>
-            </div>
 
-            <div class="card type-c">
-                <h3>⚠️ ④ 資料C｜原子力事故の分析</h3>
-                <p><strong>役割：</strong>恐怖ではなく、構造として事故を見る。「事故＝原子力の本質」という短絡を防ぐ。</p>
-                <div>
-                    <span class="tag">失敗学</span>
-                    <span class="tag">リスク管理</span>
+                <!-- 論点4 -->
+                <div class="bg-white rounded-xl overflow-hidden card-shadow flex flex-col border-t-4 border-orange-500">
+                    <div class="p-4 bg-orange-50 border-b border-orange-100">
+                        <span class="text-xs font-bold text-orange-600 block mb-1">論点④ リスク・失敗学</span>
+                        <h3 class="text-lg font-bold text-slate-800">原子力事故の分析</h3>
+                    </div>
+                    <div class="p-5 flex-grow">
+                        <p class="text-sm text-slate-500 mb-3 bg-slate-50 p-2 rounded border border-slate-100">
+                            <strong class="text-slate-700">役割：</strong>事故を恐怖ではなく、構造として理解する
+                        </p>
+                        <ul class="space-y-1.5 text-sm text-slate-700">
+                            <li class="flex items-start"><i class="fa-solid fa-circle-dot text-[8px] text-orange-500 mt-1.5 mr-2"></i>チェルノブイリ / 福島第一事故の分析</li>
+                            <li class="flex items-start"><i class="fa-solid fa-circle-dot text-[8px] text-orange-500 mt-1.5 mr-2"></i>平常運転との決定的な違い</li>
+                            <li class="flex items-start"><i class="fa-solid fa-circle-dot text-[8px] text-orange-500 mt-1.5 mr-2"></i>後処理の困難さと今後の課題・限界</li>
+                        </ul>
+                    </div>
                 </div>
-                <h4>カバー範囲</h4>
-                <ul>
-                    <li>チェルノブイリ（設計・運用の問題）</li>
-                    <li>福島第一（複合災害・想定外）</li>
-                    <li>なぜ後処理が難しいのか</li>
-                    <li>「防げた点」と「当時の限界」</li>
-                </ul>
-                <p class="point">👉 最も誤解されやすいので独立させる。責任追及ではなく構造分析。</p>
             </div>
+        </section>
 
-            <div class="card aux card-full">
-                <h3>💬 ⑤ 対話用・補助資料（余力があれば）</h3>
-                <p><strong>役割：</strong>議論が荒れた時の緩衝材。本編に入れないQ&A。</p>
-                <ul>
-                    <li>「安全」と「安心」の違い</li>
-                    <li>ゼロリスク思考の問題点</li>
-                    <li>科学と社会のズレ</li>
-                </ul>
+        <!-- 4. 資料設計 -->
+        <section>
+            <h2 class="section-title text-2xl font-bold text-slate-800 mb-6">4. 資料設計（レイヤー構造）</h2>
+            <div class="bg-white p-6 md:p-8 rounded-xl card-shadow">
+                <p class="text-sm text-slate-600 mb-8 border-l-4 border-slate-200 pl-4 italic">
+                    資料は「1本にまとめる」ことを目的としない。誤解が生じにくい構造を最優先とする。
+                </p>
+                
+                <div class="flex flex-col space-y-4">
+                    <!-- Layer 0 -->
+                    <div class="flex items-center group">
+                        <div class="w-12 h-12 rounded-full bg-slate-400 text-white flex items-center justify-center font-bold shadow-lg z-10 shrink-0 group-hover:scale-110 transition-transform">L0</div>
+                        <div class="ml-4 flex-grow bg-slate-100 p-3 rounded-lg border border-slate-200 shadow-sm flex justify-between items-center">
+                            <span class="font-bold text-slate-700">全体地図</span>
+                            <span class="text-xs text-slate-500 bg-white px-2 py-1 rounded">ナビゲーション</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-arrow-down text-slate-300 ml-5"></i>
+                    <!-- Layer 1 -->
+                    <div class="flex items-center group">
+                        <div class="w-12 h-12 rounded-full bg-green-500 text-white flex items-center justify-center font-bold shadow-lg z-10 shrink-0 group-hover:scale-110 transition-transform">L1</div>
+                        <div class="ml-4 flex-grow bg-green-50 p-3 rounded-lg border border-green-100 shadow-sm flex justify-between items-center">
+                            <span class="font-bold text-green-700">原子力の基礎</span>
+                            <span class="text-xs text-green-600 bg-white px-2 py-1 rounded">論点①</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-arrow-down text-slate-300 ml-5"></i>
+                    <!-- Layer 2 -->
+                    <div class="flex items-center group">
+                        <div class="w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold shadow-lg z-10 shrink-0 group-hover:scale-110 transition-transform">L2</div>
+                        <div class="ml-4 flex-grow bg-blue-50 p-3 rounded-lg border border-blue-100 shadow-sm flex justify-between items-center">
+                            <span class="font-bold text-blue-700">電力インフラ</span>
+                            <span class="text-xs text-blue-600 bg-white px-2 py-1 rounded">論点②</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-arrow-down text-slate-300 ml-5"></i>
+                    <!-- Layer 3 -->
+                    <div class="flex items-center group">
+                        <div class="w-12 h-12 rounded-full bg-cyan-500 text-white flex items-center justify-center font-bold shadow-lg z-10 shrink-0 group-hover:scale-110 transition-transform">L3</div>
+                        <div class="ml-4 flex-grow bg-cyan-50 p-3 rounded-lg border border-cyan-100 shadow-sm flex justify-between items-center">
+                            <span class="font-bold text-cyan-700">環境と管理</span>
+                            <span class="text-xs text-cyan-600 bg-white px-2 py-1 rounded font-bold">論点③ (独立軸)</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-arrow-down text-slate-300 ml-5"></i>
+                    <!-- Layer 4 -->
+                    <div class="flex items-center group">
+                        <div class="w-12 h-12 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold shadow-lg z-10 shrink-0 group-hover:scale-110 transition-transform">L4</div>
+                        <div class="ml-4 flex-grow bg-orange-50 p-3 rounded-lg border border-orange-100 shadow-sm flex justify-between items-center">
+                            <span class="font-bold text-orange-700">事故分析</span>
+                            <span class="text-xs text-orange-600 bg-white px-2 py-1 rounded">論点④</span>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </section>
 
+        <!-- 5. やらないこと & 6. お義父さんの知見 -->
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- 5. やらないこと -->
+            <section>
+                <h2 class="section-title text-2xl font-bold text-slate-800 mb-6 text-red-600">5. やらないこと（NOT TO DO）</h2>
+                <div class="bg-white p-6 rounded-xl card-shadow h-full border-t-4 border-red-500">
+                    <ul class="space-y-4">
+                        <li class="flex items-center text-slate-700 font-medium">
+                            <span class="w-6 h-6 rounded-full bg-red-100 text-red-500 flex items-center justify-center mr-3 flex-shrink-0 text-xs">
+                                <i class="fa-solid fa-ban"></i>
+                            </span>
+                            原子力政策への提言
+                        </li>
+                        <li class="flex items-center text-slate-700 font-medium">
+                            <span class="w-6 h-6 rounded-full bg-red-100 text-red-500 flex items-center justify-center mr-3 flex-shrink-0 text-xs">
+                                <i class="fa-solid fa-ban"></i>
+                            </span>
+                            推進・反対の主張
+                        </li>
+                        <li class="flex items-center text-slate-700 font-medium">
+                            <span class="w-6 h-6 rounded-full bg-red-100 text-red-500 flex items-center justify-center mr-3 flex-shrink-0 text-xs">
+                                <i class="fa-solid fa-ban"></i>
+                            </span>
+                            ゼロリスクの保証
+                        </li>
+                        <li class="flex items-center text-slate-700 font-medium">
+                            <span class="w-6 h-6 rounded-full bg-red-100 text-red-500 flex items-center justify-center mr-3 flex-shrink-0 text-xs">
+                                <i class="fa-solid fa-ban"></i>
+                            </span>
+                            感情的・扇動的なコンテンツ制作
+                        </li>
+                        <li class="flex items-center text-slate-700 font-medium">
+                            <span class="w-6 h-6 rounded-full bg-red-100 text-red-500 flex items-center justify-center mr-3 flex-shrink-0 text-xs">
+                                <i class="fa-solid fa-ban"></i>
+                            </span>
+                            短絡的な結論提示
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 6. お義父さんの知見 -->
+            <section>
+                <h2 class="section-title text-2xl font-bold text-slate-800 mb-6">6. 知見と資料化の考え方</h2>
+                <div class="bg-slate-800 text-white p-6 rounded-xl shadow-lg h-full">
+                    <p class="text-xs text-slate-400 mb-4 tracking-widest uppercase">Expertise Structure</p>
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-blue-500 w-2 h-2 rounded-full"></div>
+                            <span class="text-sm">科学・技術としての事実</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-blue-500 w-2 h-2 rounded-full"></div>
+                            <span class="text-sm">インフラとしての制約</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-cyan-400 w-2 h-2 rounded-full shadow-[0_0_8px_rgba(34,211,238,0.6)]"></div>
+                            <span class="text-sm font-bold">環境汚染・環境管理の経験知</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-blue-500 w-2 h-2 rounded-full"></div>
+                            <span class="text-sm">事故と社会的影響の教訓</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-700 p-4 rounded-lg border border-slate-600">
+                        <p class="text-xs text-cyan-300 font-bold mb-2">設計方針：</p>
+                        <p class="text-sm leading-relaxed">
+                            「環境」を事故由来と平常時管理に分離し、<strong class="text-cyan-300">『環境汚染＝事故』という短絡を防ぐ</strong>。すべてを語らないことを意図的な設計とする。
+                        </p>
+                    </div>
+                </div>
+            </section>
         </div>
-    </section>
 
-    <section>
-        <h2>🧠 思考との対応関係</h2>
-        <p>「全部1本」は無理なので、分解して再構成するための対応表。</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>要説明項目</th>
-                    <th>対応する資料</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>技術・放射線</td>
-                    <td><strong>資料A（基礎知識）</strong></td>
-                </tr>
-                <tr>
-                    <td>電力インフラ</td>
-                    <td><strong>資料B（需給バランス）</strong></td>
-                </tr>
-                <tr>
-                    <td>事故と教訓</td>
-                    <td><strong>資料C（事故分析）</strong></td>
-                </tr>
-                <tr>
-                    <td>社会受容・風評</td>
-                    <td><strong>補助資料</strong></td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
+        <!-- 7. 今後の進め方 -->
+        <section class="bg-white p-6 md:p-8 rounded-xl card-shadow">
+            <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center">
+                <i class="fa-solid fa-forward-step mr-3 text-blue-600"></i>
+                7. 今後の進め方（内部合意）
+            </h2>
+            <div class="grid md:grid-cols-3 gap-4 text-center">
+                <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                    <span class="block text-blue-600 font-bold text-xl mb-1">01</span>
+                    <p class="text-sm font-bold text-slate-700">ベースライン固定</p>
+                    <p class="text-[10px] text-slate-500 mt-1">本方針資料を基準とする</p>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                    <span class="block text-blue-600 font-bold text-xl mb-1">02</span>
+                    <p class="text-sm font-bold text-slate-700">レイヤーの決定</p>
+                    <p class="text-[10px] text-slate-500 mt-1">作成する層を1つ選定</p>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                    <span class="block text-blue-600 font-bold text-xl mb-1">03</span>
+                    <p class="text-sm font-bold text-slate-700">ファイル管理</p>
+                    <p class="text-[10px] text-slate-500 mt-1">概要→詳細の別管理</p>
+                </div>
+            </div>
+        </section>
 
-    <div class="next-step">
-        <h3>🚀 結論と次のステップ</h3>
-        <p><strong>設計の結論：</strong>分ける判断は正しい。1本にまとめない方が伝わる。まずは「地図」と「基礎」から。</p>
-        <hr style="border: 0; border-top: 1px solid #abebc6; margin: 15px 0;">
-        <p><strong>Next Actions:</strong></p>
-        <ol>
-            <li>この構成で「目次レベル」を確定する</li>
-            <li>どれを「最初の公開資料」にするか決める</li>
-            <li>想定読者（一般／学生／大人）を決める（→ これで「作らないもの」が決まる）</li>
-        </ol>
-    </div>
+        <!-- 8. 最後に -->
+        <section class="text-center py-12">
+            <div class="inline-block bg-white p-8 md:p-12 rounded-3xl shadow-2xl border-t-8 border-blue-600 max-w-2xl relative overflow-hidden">
+                <!-- Decoration -->
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-50 rounded-full"></div>
+                
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-[0.3em] mb-6 relative">Final Philosophy</h2>
+                <p class="text-xl md:text-2xl text-slate-800 font-medium mb-8 relative">
+                    このプロジェクトは、「正解を教える」ものではなく、<br class="hidden md:block">
+                    <span class="text-blue-600 font-bold px-2 border-b-4 border-blue-100">「考える力を奪わない」</span><br class="md:hidden">ことを最優先とする。
+                </p>
+                <div class="bg-slate-800 text-white p-6 rounded-2xl relative shadow-inner">
+                    <p class="text-xs text-slate-400 mb-2">迷った時の究極の判断基準</p>
+                    <p class="text-lg md:text-xl font-bold text-white">『それは読み手の思考を狭めていないか？』</p>
+                </div>
+            </div>
+        </section>
 
-</div>
+    </main>
+
+    <footer class="bg-slate-800 text-slate-500 py-8 text-center text-xs border-t border-slate-700">
+        <div class="container mx-auto px-4">
+            <p class="mb-2">Internal Use Only - Confidential Design Document</p>
+            <p>© Nuclear Power Learning Project. All Rights Reserved.</p>
+        </div>
+    </footer>
 
 </body>
 </html>
