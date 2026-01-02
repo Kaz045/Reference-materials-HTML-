@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>論考骨子レビュー資料</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: #333;
+            background-color: #f3f4f6;
+            height: 100vh;
+            overflow: hidden; /* Prevent body scroll, handle in columns */
+        }
+        .markdown-body h1 { font-size: 1.5rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 1rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; color: #1f2937; }
+        .markdown-body h2 { font-size: 1.25rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; color: #374151; border-left: 5px solid #3b82f6; padding-left: 0.75rem; background-color: #eff6ff; padding-top: 0.25rem; padding-bottom: 0.25rem;}
+        .markdown-body h3 { font-size: 1.1rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.75rem; color: #4b5563; }
+        .markdown-body ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .markdown-body li { margin-bottom: 0.5rem; line-height: 1.7; }
+        .markdown-body p { margin-bottom: 1rem; line-height: 1.8; }
+        .markdown-body blockquote { border-left: 4px solid #9ca3af; padding-left: 1rem; color: #4b5563; font-style: italic; background-color: #f9fafb; padding: 1rem; margin-bottom: 1rem; border-radius: 0.25rem;}
+
+        /* Intent Panel Styles */
+        .intent-card { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 5px solid #10b981; }
+        .intent-card h2 { font-size: 1.2rem; font-weight: 700; color: #065f46; margin-bottom: 1rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; }
+        .intent-card h3 { font-size: 1.05rem; font-weight: 700; color: #047857; margin-top: 1rem; margin-bottom: 0.5rem; }
+        .intent-card p { margin-bottom: 0.75rem; font-size: 0.95rem; line-height: 1.7; }
+        .intent-card blockquote { background-color: #ecfdf5; border-left-color: #10b981; font-style: normal; font-weight: 500; color: #064e3b; }
+        
+        .role-badge { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 700; margin-right: 0.5rem; }
+        .role-father { background-color: #dbeafe; color: #1e40af; }
+        .role-kaz { background-color: #fce7f3; color: #9d174d; }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+    </style>
+</head>
+<body class="flex flex-col h-screen">
+
+    <!-- Header -->
+    <header class="bg-gray-800 text-white p-4 shadow-md flex-none z-10">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold">論考骨子 レビュー資料</h1>
+                <p class="text-sm text-gray-400">作成：和彦</p>
+            </div>
+            <div class="text-sm bg-gray-700 px-3 py-1 rounded">
+                使い方：右側の「構成の意図」を読みながら、左側の「骨子」をご確認ください
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex flex-1 overflow-hidden">
+        
+        <!-- Left Column: TOC Master (The Outline) -->
+        <div class="w-1/2 overflow-y-auto p-8 bg-white border-r border-gray-200" id="outline-col">
+            <div class="max-w-3xl mx-auto markdown-body">
+                <div class="mb-6 pb-4 border-b border-gray-200">
+                    <span class="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded mb-2 inline-block">レビュー対象</span>
+                    <h1 class="!mt-0 !mb-2 !border-0 text-2xl">論考の全体骨子 (TOC)</h1>
+                    <p class="text-gray-600 text-sm">ここに実際の構成案を記載しています。</p>
+                </div>
+
+                <!-- CONTENT OF toc_master.md -->
+                <h1>📘 原子力・電力・環境を学んだ上で考える</h1>
+                <h2>― 学校では教えてくれない「参加」と「後始末」の話 ―</h2>
+                <blockquote>
+                <p>※本論考は、原子力発電を「推進／反対」に結論づけるものではない。<br>
+                事実・経験・限界を共有したうえで、<br>
+                <strong>エネルギーを使う私たち自身が、決め・監視し・後始末まで引き受ける</strong>ための<br>
+                思考の骨格（背骨）を提示することを目的とする。</p>
+                </blockquote>
+                <hr>
+                <h2>はじめに｜なぜ「結論」を残さず、「当事者」を残したいのか</h2>
+                <ul>
+                <li>原子力は賛成か反対かの問題ではない</li>
+                <li>本当に問われているのは「誰が決め、誰が引き受けるのか」</li>
+                <li>本論考の立場：専門家ではない／だが参加を放棄しない</li>
+                <li>本論考が目指すもの：<strong>答えではなく、参加できる頭と姿勢</strong></li>
+                </ul>
+                <hr>
+                <h2>第Ⅰ部｜前提をそろえる：参加するための最低限の知識</h2>
+                <h3>第1章 原子力発電は、何をしている装置なのか</h3>
+                <ul>
+                <li>原子力発電の基本構造（核分裂・熱・タービン）</li>
+                <li>他の発電方式との共通点と違い</li>
+                <li>原子力は「特別」ではなく、選択肢の一つ</li>
+                </ul>
+                <h3>第2章 放射線は「怖いもの」なのか</h3>
+                <ul>
+                <li>放射線とともにある日常</li>
+                <li>被ばくの種類と考え方</li>
+                <li>基準値・測定値・安全係数という“判断の道具”</li>
+                </ul>
+                <h3>第3章 平常運転の原発は、どう安全を保っているのか</h3>
+                <ul>
+                <li>多重防護という思想</li>
+                <li>「事故を起こさない」ではなく「事故に耐える」設計</li>
+                <li>平常と非常を混同しないための視点</li>
+                </ul>
+                <hr>
+                <h2>第Ⅱ部｜止められない電力：決める前に知っておく現実</h2>
+                <h3>第4章 電力はなぜ貯められないのか</h3>
+                <ul>
+                <li>同時同量という制約</li>
+                <li>需給バランスが崩れたときに起きること</li>
+                <li>停電は生活の不便ではなく、社会の停止</li>
+                </ul>
+                <h3>第5章 系統・周波数・安定供給という見えない土台</h3>
+                <ul>
+                <li>電力系統の役割</li>
+                <li>周波数が崩れると何が起きるか</li>
+                <li>大規模停電が奪うもの</li>
+                </ul>
+                <h3>第6章 ベストミックスという「参加型の選択」</h3>
+                <ul>
+                <li>どの発電方式も万能ではない</li>
+                <li>リスクと負担はどこに残るのか</li>
+                <li>私たちは、どの現実を引き受けて選ぶのか</li>
+                </ul>
+                <hr>
+                <h2>第Ⅲ部｜環境管理：消すのではなく、引き受ける</h2>
+                <h3>第7章 環境汚染とは何か</h3>
+                <ul>
+                <li>汚染は「ある／ない」ではなく「管理と処理」</li>
+                <li>公害が教えた失敗</li>
+                </ul>
+                <h3>第8章 放射性物質の処理・処分という後始末</h3>
+                <ul>
+                <li>「処理・処分＝消滅」という誤解</li>
+                <li>汚染水・放射性廃棄物の現実</li>
+                <li>長期管理という時間責任</li>
+                </ul>
+                <h3>第9章 科学的安全と社会的安心がズレる理由</h3>
+                <ul>
+                <li>数字があっても不安は消えない</li>
+                <li>信頼は、管理と参加（人と人のコミュニケーション）の積み重ねが必須</li>
+                </ul>
+                <hr>
+                <h2>第Ⅳ部｜事故は何を壊し、何を残したのか</h2>
+                <h3>第10章 平常運転と事故は、まったく別の世界</h3>
+                <ul>
+                <li>想定と現実の乖離</li>
+                <li>非常時に露呈する限界</li>
+                </ul>
+                <h3>第11章 福島第一原発事故という「未完の後始末」</h3>
+                <ul>
+                <li>複合災害としての構造</li>
+                <li>なぜ今も終わらないのか</li>
+                </ul>
+                <h3>第12章 チェルノブイリと比較して見えるもの</h3>
+                <ul>
+                <li>技術・運用・社会体制の違い</li>
+                <li>一括りにできない理由</li>
+                </ul>
+                <h3>第13章 後始末の現場で起きていること</h3>
+                <ul>
+                <li>燃料デブリ、除染土、帰還困難区域</li>
+                <li>科学と生活のあいだでの判断</li>
+                <li>現世代が引き受けるべき責任</li>
+                </ul>
+                <hr>
+                <h2>第Ⅴ部｜参加できる社会でなければ、後始末は歪む</h2>
+                <h3>第14章 原子力に強い町とは何か</h3>
+                <ul>
+                <li>協定書と立入検査という「参加の仕組み」</li>
+                <li>ダブルチェックが生む緊張感</li>
+                </ul>
+                <h3>第15章 地域との信頼はどう築かれるのか</h3>
+                <ul>
+                <li>ワカメの分析が示したもの</li>
+                <li>数値ではなく、信頼関係が理解を得る</li>
+                </ul>
+                <h3>第16章 基準を裏切る制度が壊すもの</h3>
+                <ul>
+                <li>農作物実証試験と全量廃棄の矛盾</li>
+                <li>科学を信じない、自己防衛策に必死な政府が生む不信</li>
+                </ul>
+                <hr>
+                <h2>第Ⅵ部｜「安全」を社会の仕組みにする：見えない仕事と継承</h2>
+                <h3>第17章 「何も起きない」をつくる仕事</h3>
+                <ul>
+                <li>公害対策・安全管理が担うのは「起きてから」ではなく「起きないようにする」こと</li>
+                <li>成果は見えにくいが、破綻すれば被害と社会コストが一気に顕在化する</li>
+                </ul>
+                <h3>第18章 技術と覚悟はどう継承されるのか</h3>
+                <ul>
+                <li>良い送信機と良い受信機</li>
+                <li>次世代に残すべきもの</li>
+                </ul>
+                <h3>第19章 ゼロリスクという誘惑</h3>
+                <ul>
+                <li>なぜ私たちはゼロを求めてしまうのか</li>
+                <li>選択から逃げないために</li>
+                </ul>
+                <hr>
+                <h2>おわりに｜答えではなく、「参加できる力」を次へ</h2>
+                <ul>
+                <li>この論考が残したいもの</li>
+                <li>結論を出さなかった理由</li>
+                <li>私たちに託された問い</li>
+                </ul>
+                <hr>
+                <blockquote>
+                <p>本論考が扱っているのは原子力そのものではない。 <strong>「社会の難問に、どう参加し、どう未来を考えるか」</strong>である。</p>
+                </blockquote>
+            </div>
+            <div class="h-32"></div> <!-- Spacer for scrolling -->
+        </div>
+
+        <!-- Right Column: Context & Intent (The Guide) -->
+        <div class="w-1/2 overflow-y-auto p-8 bg-gray-50" id="intent-col">
+            <div class="max-w-2xl mx-auto">
+                <div class="mb-6 pb-4 border-b border-gray-300">
+                    <span class="bg-green-600 text-white text-xs font-bold px-2 py-1 rounded mb-2 inline-block">レビューの視点</span>
+                    <h1 class="text-2xl font-bold text-gray-800">構成の意図とメッセージ</h1>
+                    <p class="text-gray-600 text-sm">左側の骨子に対して、私が込めた意図を整理しました。</p>
+                </div>
+
+                <!-- Section 1: Updated with requested bullet point -->
+                <div class="intent-card">
+                    <h2>1. この論考の立ち位置</h2>
+                    <p>この論考は、原子力の是非を決める文章ではありません。</p>
+                    <blockquote>
+                    「お義父さんがずっとやってきた <strong>“学校では教えられない考え方”を、次の世代に渡すための骨組み</strong> です。」
+                    </blockquote>
+                    <p class="mt-2 text-sm text-gray-600">
+                        <ul class="list-disc pl-5 mt-1">
+                            <li>推進でも反対でもない</li>
+                            <li>技術解説書でもない</li>
+                            <li>自分たちで未来を考えられる次世代を作ることを目的とする</li>
+                        </ul>
+                        という立ち位置です。
+                    </p>
+                </div>
+
+                <!-- Section 2: Terminology swap (Father -> Father-in-law) -->
+                <div class="intent-card">
+                    <h2>2. 執筆の目的（やりたかったこと）</h2>
+                    <blockquote>
+                    「結論を残すんじゃなくて、<strong>“参加して、自分で選べる頭の使い方”を残したい</strong> と思いました。」
+                    </blockquote>
+                    <p class="mt-2 text-sm text-gray-600">
+                        お義父さんがずっと言っていた<strong>『数字だけじゃ決められない』『現場を見ろ』『後始末から逃げるな』</strong>、それを“思想”として残すことが狙いです。
+                    </p>
+                </div>
+
+                <!-- Section 3: The Core Structure -->
+                <div class="intent-card !border-blue-500 !bg-blue-50">
+                    <h2 class="!text-blue-800 !border-blue-200">3. 構成の全体図（なぜこの順番か）</h2>
+                    <p>全体を「3つの役割」で分けて構成しました。</p>
+
+                    <div class="mt-4 bg-white p-4 rounded border border-blue-100">
+                        <h3>【前半】参加するための前提づくり（第Ⅰ・Ⅱ部）</h3>
+                        <p class="font-bold text-gray-700">👉 ここは“市民側の準備運動”</p>
+                        <p class="text-sm">難しい専門論ではなく「最低限これを知らないと参加できない」というラインを示しています。</p>
+                        
+                        <div class="mt-3 grid grid-cols-1 gap-2 text-sm">
+                            <div class="p-2 bg-blue-100 rounded">
+                                <span class="role-badge role-father">お義父さんの考え</span>
+                                「知らないまま反対／賛成するのは違う」「まず現実を知れ」
+                            </div>
+                            <div class="p-2 bg-pink-50 rounded">
+                                <span class="role-badge role-kaz">和彦の役割</span>
+                                図解・噛み砕き、一般向けの言葉への翻訳
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 bg-white p-4 rounded border border-blue-100">
+                        <h3>【中盤】現実と向き合うパート（第Ⅲ・Ⅳ部）</h3>
+                        <p class="font-bold text-gray-700">👉 ここが“お義父さんの思想の芯”</p>
+                        <p class="text-sm">環境管理、処理・処分、福島事故。「後始末」という言葉をあえて正面から使っています。</p>
+                        
+                        <div class="mt-3 grid grid-cols-1 gap-2 text-sm">
+                            <div class="p-2 bg-blue-100 rounded">
+                                <span class="role-badge role-father">お義父さんの考え</span>
+                                「消せないものは管理するしかない」「事故は“なかったこと”にできない」「次の世代が詰む形で先送りするな」
+                            </div>
+                            <div class="p-2 bg-pink-50 rounded">
+                                <span class="role-badge role-kaz">和彦の役割</span>
+                                話を整理し、読み手が逃げないよう支える（※思想は足しません）
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 bg-white p-4 rounded border border-blue-100">
+                        <h3>【後半】社会の仕組みとして考える（第Ⅴ・Ⅵ部）</h3>
+                        <p class="font-bold text-gray-700">👉 ここが“未来側”</p>
+                        <p class="text-sm">参加できる社会でないと後始末は歪む。自治体の監視、地域との信頼、安全を「仕組み」にする仕事について。</p>
+                        
+                        <div class="mt-3 grid grid-cols-1 gap-2 text-sm">
+                            <div class="p-2 bg-blue-100 rounded">
+                                <span class="role-badge role-father">お義父さんの考え</span>
+                                「安全は信頼じゃなく、仕組み」「見えない仕事が社会を支えてる」
+                            </div>
+                            <div class="p-2 bg-pink-50 rounded">
+                                <span class="role-badge role-kaz">和彦の役割</span>
+                                民主主義・教育の視点を補足し、社会構造として整理
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4 -->
+                <div class="intent-card">
+                    <h2>4. 「後始末」と「未来」の関係について</h2>
+                    <p>誤解が出やすい点ですが、「後始末」は過去の話ではありません。</p>
+                    <blockquote>
+                    「“後始末”って言葉は重いけど、これは <strong>未来を詰ませないための現在の選択</strong> として使っています。」
+                    </blockquote>
+                    <p class="mt-2 text-sm text-gray-600">
+                        そのため、タイトルと最後は「未来」、中身は「後始末」という構造にしています。
+                    </p>
+                </div>
+
+                <!-- Section 5: Updated Section Title & Text replacement -->
+                <div class="intent-card">
+                    <h2>5. 役割の切り分け</h2>
+                    <p>考え方の芯は、すべてお義父さんのものです。私はそれを、次世代が読める順番と言葉に並べ替えているだけです。</p>
+                    
+                    <div class="overflow-hidden border rounded-lg mt-2">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">領域</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">担当</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200 text-sm">
+                                <tr>
+                                    <td class="px-4 py-2">現実認識・価値観</td>
+                                    <td class="px-4 py-2 font-bold text-blue-800">お義父さん</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2">技術的な正直さ</td>
+                                    <td class="px-4 py-2 font-bold text-blue-800">お義父さん</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2">構造化・編集・翻訳</td>
+                                    <td class="px-4 py-2 text-pink-700">和彦</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2">社会・教育文脈</td>
+                                    <td class="px-4 py-2 text-pink-700">和彦</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Section 6: Final sentence replacement -->
+                <div class="intent-card border-l-orange-500">
+                    <h2 class="!text-orange-700">最後に：確認いただきたいポイント</h2>
+                    <p>細かい技術論ではなく、以下の点をご確認いただきたいです。</p>
+                    <blockquote>
+                    <strong>「考え方としてズレてないか」<br>
+                    「“伝えたい姿勢”が合ってるかどうか」</strong>
+                    </blockquote>
+                    <p class="text-sm mt-2 font-medium">この骨子が問題なければ、論考を書き下ろします。完成したらまたお義父さんにレビューをお願いしたいと思います。</p>
+                </div>
+
+                <div class="h-32"></div> <!-- Spacer for scrolling -->
+            </div>
+        </div>
+    </main>
+</body>
+</html>
